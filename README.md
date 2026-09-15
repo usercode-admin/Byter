@@ -1,4 +1,4 @@
-# BYTER
+# ⚡ BYTER
 
 <div align="center">
 
@@ -11,99 +11,519 @@
       Y8888P'    YP       YP    Y88888P 88   YD
 ```
 
-<p align="center">
-  <img src="./images/main.webp" alt="logo" width="500">
-</p>
+### Multi-Layer Network Security Research Tool
 
-
-### Multi-Layer Network Security Research Framework
-
-**L3 • L4 • L7 • Traffic Analysis • Automation • Performance**
+**L3 • L4 • L7 • Raw Sockets • HTTP/2 • TLS Fingerprinting • Automation**
 
 <br>
 
 ![Go](https://img.shields.io/badge/Go-1.22%2B-00ADD8?style=for-the-badge\&logo=go\&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-Required-FCC624?style=for-the-badge\&logo=linux\&logoColor=black)
+![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?style=for-the-badge\&logo=linux\&logoColor=black)
 ![License](https://img.shields.io/badge/License-MIT-6366F1?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Research-22C55E?style=for-the-badge)
+![Architecture](https://img.shields.io/badge/Architecture-L3%20%7C%20L4%20%7C%20L7-8B5CF6?style=for-the-badge)
 
 </div>
 
 ---
 
-## 📖 About
+## 📌 Overview
 
-**BYTER** is a high-performance, multi-layer network security research and traffic-analysis framework written in **Go**.
+**BYTER** is a Linux-focused network security research and traffic-generation framework written in **Go**.
 
-The project is organized around three networking layers:
-
-* **L3 — Network Layer**
-* **L4 — Transport Layer**
-* **L7 — Application Layer**
-
-It combines low-level packet handling, TCP state experimentation, HTTP traffic simulation, browser-profile emulation, configurable rate control, and automated traffic scheduling into a single interactive CLI.
-
-> **BYTER is intended for controlled security research, laboratory environments, authorized penetration testing, and educational experimentation.**
-
----
-
-## ✨ Highlights
-
-| Component                 | Description                                                                                   |
-| :------------------------ | :-------------------------------------------------------------------------------------------- |
-| 🌐 **L3 Engine**          | IPv4 packet construction, fragmentation research, TTL experimentation and randomized payloads |
-| 🔗 **L4 Engine**          | TCP flag/state experimentation, sequence handling and TCP option configuration                |
-| 🌍 **L7 Engine**          | HTTP traffic orchestration with configurable client behavior                                  |
-| 🧩 **JA3 Support**        | TLS fingerprint configuration through uTLS                                                    |
-| 🌐 **HTTP/2**             | HTTP/2-capable application-layer traffic                                                      |
-| 🤖 **JS Solver**          | Optional Goja / Chromedp-based JavaScript challenge handling                                  |
-| 🖥️ **Browser Profiles**  | Chrome, Firefox, Safari and Edge-style request profiles                                       |
-| 🍪 **Session Management** | Cookie and session handling                                                                   |
-| 🔄 **Proxy Pool**         | Configurable proxy management                                                                 |
-| 📈 **Rate Control**       | Steady, Burst and Adaptive traffic-control modes                                              |
-| 🌊 **Pulse Wave**         | Automated traffic scheduling and vector coordination                                          |
-| ⚡ **Linux Performance**   | Linux-specific socket and batch-send optimizations                                            |
-| 📊 **Live Statistics**    | Real-time counters and runtime state information                                              |
-
----
-
-# 🏗️ Architecture
+The project is structured around multiple networking layers and combines low-level packet construction with higher-level HTTP client behavior.
 
 ```text
-                         ┌─────────────────────┐
-                         │       BYTER         │
-                         │   Interactive CLI   │
-                         └──────────┬──────────┘
-                                    │
-                         ┌──────────▼──────────┐
-                         │    Core Engine      │
-                         │ Configuration/State │
-                         └──────────┬──────────┘
-                                    │
-              ┌─────────────────────┼─────────────────────┐
-              │                     │                     │
-       ┌──────▼──────┐       ┌──────▼──────┐       ┌──────▼──────┐
-       │     L3      │       │     L4      │       │     L7      │
-       │   Network   │       │  Transport  │       │ Application │
-       └──────┬──────┘       └──────┬──────┘       └──────┬──────┘
-              │                     │                     │
-              │                     │              ┌──────▼───────┐
-              │                     │              │ HTTP Engine  │
-              │                     │              ├──────────────┤
-              │                     │              │ Headers      │
-              │                     │              │ Profiles     │
-              │                     │              │ Cookies      │
-              │                     │              │ Proxy Pool   │
-              │                     │              │ JS Solver    │
-              │                     │              └──────────────┘
-              │                     │
-              └─────────────────────┼─────────────────────┐
-                                    │                     │
-                            ┌───────▼────────┐    ┌───────▼────────┐
-                            │ Rate Limiter   │    │ Pulse Wave     │
-                            │ Steady/Burst/  │    │ Automation     │
-                            │ Adaptive       │    │ Scheduler      │
-                            └────────────────┘    └────────────────┘
+                    ┌──────────────────────┐
+                    │        BYTER         │
+                    │    Interactive CLI   │
+                    └──────────┬───────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              │                │                │
+         ┌────▼────┐      ┌────▼────┐      ┌────▼────┐
+         │   L3    │      │   L4    │      │   L7    │
+         │ Network │      │Transport│      │   HTTP  │
+         └────┬────┘      └────┬────┘      └────┬────┘
+              │                │                │
+              └────────────────┼────────────────┘
+                               │
+                     ┌─────────▼─────────┐
+                     │  Core / Runtime   │
+                     │ State • Counters  │
+                     │ Rate • Scheduling │
+                     └───────────────────┘
+```
+
+BYTER is intended for **authorized security research, controlled laboratory testing, network-stack experimentation, and educational purposes**.
+
+---
+
+# ✨ Features
+
+## 🌐 Layer 3
+
+The L3 subsystem contains low-level IPv4 packet-generation functionality.
+
+Key components include:
+
+* Raw IPv4 packet construction
+* Randomized source-address generation
+* TTL variation
+* IP identification handling
+* Fragment-related packet fields
+* Randomized payload pool
+* Configurable packet batches
+* Linux raw-socket transmission
+* Batch transmission through `sendmmsg`
+
+Relevant implementation:
+
+```text
+core/l3_fragment.go
+utils/raw_socket.go
+utils/batch_send.go
+utils/tcp_craft.go
+```
+
+---
+
+## 🔗 Layer 4
+
+The L4 subsystem focuses on manually constructed IPv4/TCP packets and configurable TCP state fields.
+
+Supported functionality includes:
+
+* TCP flag combinations
+* Sequence-number handling
+* Source-port randomization
+* TCP window manipulation
+* TCP option templates
+* TTL variation
+* TCP checksum generation
+* Batched packet transmission
+
+The TCP flag constants include:
+
+```text
+FIN
+SYN
+RST
+PSH
+ACK
+URG
+ECE
+CWR
+```
+
+TCP packet construction is implemented in:
+
+```text
+core/l4_state.go
+utils/tcp_craft.go
+```
+
+---
+
+## 🌍 Layer 7
+
+The L7 subsystem provides an HTTP-oriented traffic engine with configurable client behavior.
+
+It supports three operating modes:
+
+```text
+slow
+flood
+hybrid
+```
+
+The `hybrid` mode combines the two L7 execution paths concurrently.
+
+The L7 subsystem includes:
+
+* HTTP client management
+* HTTP/1.1 support
+* HTTP/2 support
+* TLS configuration
+* uTLS-based ClientHello selection
+* Browser-style request headers
+* Session cookies
+* JavaScript execution options
+* Resource discovery
+* Referer handling
+* DNS caching
+* Proxy-pool support
+* Configurable connection concurrency
+
+---
+
+# 🧬 TLS & Browser Profiles
+
+BYTER includes browser-oriented profiles and TLS ClientHello selection.
+
+Available application profiles in `profile.go`:
+
+| Profile | Available |
+| :------ | :-------: |
+| Chrome  |     ✅     |
+| Firefox |     ✅     |
+| Safari  |     ✅     |
+
+The L7 flood engine additionally contains a User-Agent pool containing desktop and mobile browser identities.
+
+TLS ClientHello selection is handled through:
+
+```text
+github.com/refraction-networking/utls
+```
+
+The implementation selects different ClientHello presets according to the selected browser identity.
+
+---
+
+# 🌐 HTTP/2
+
+HTTP/2 support is implemented using:
+
+```text
+golang.org/x/net/http2
+```
+
+The project contains separate HTTP transport handling for HTTP/2 and HTTP/1.1 operation.
+
+Relevant files:
+
+```text
+core/l7/client.go
+core/l7/flood.go
+```
+
+---
+
+# 🤖 JavaScript Solver
+
+The L7 subsystem provides three JavaScript modes:
+
+```text
+none
+goja
+chromedp
+```
+
+### Goja
+
+Uses the embedded JavaScript runtime:
+
+```text
+github.com/dop251/goja
+```
+
+The implementation extracts inline `<script>` elements and evaluates their contents.
+
+### Chromedp
+
+Uses:
+
+```text
+github.com/chromedp/chromedp
+```
+
+to create a browser context, navigate to a page and retrieve the resulting document.
+
+### None
+
+Disables JavaScript processing.
+
+---
+
+# 🍪 Sessions & Cookies
+
+The `Session` abstraction stores:
+
+* HTTP cookie jar
+* Selected browser profile
+* Referer information
+* Arbitrary session tokens
+
+Session management is implemented in:
+
+```text
+core/l7/jar.go
+```
+
+The standard Go `http.CookieJar` implementation is used for cookie persistence.
+
+---
+
+# 🔄 Resource & Referer Handling
+
+When resource processing is enabled, the L7 request flow can inspect returned HTML and identify:
+
+```text
+<link ...>
+<script ...>
+<img ...>
+```
+
+The resource parser resolves discovered URLs relative to the original page.
+
+Resource types are classified as:
+
+```text
+style
+script
+image
+empty
+```
+
+Relevant implementation:
+
+```text
+core/l7/request.go
+```
+
+---
+
+# 🌐 DNS Cache
+
+BYTER contains a small in-memory DNS cache.
+
+```text
+DNSCache
+├── host → []IP
+├── timestamp tracking
+└── configurable expiration
+```
+
+The current implementation uses a **60-second cache lifetime**.
+
+It also provides random selection when multiple addresses are returned.
+
+Implementation:
+
+```text
+core/l7/dns.go
+```
+
+---
+
+# 🔁 Proxy Pool
+
+The L7 package includes a simple rotating proxy pool.
+
+```text
+ProxyPool
+├── proxy list
+├── mutex protection
+└── round-robin selection
+```
+
+A selected proxy can be applied directly to an `http.Transport`.
+
+Implementation:
+
+```text
+core/l7/proxy.go
+```
+
+---
+
+# ⏱️ Rate Control
+
+The core engine contains a configurable rate limiter with three modes:
+
+| Mode       | Purpose                                              |
+| :--------- | :--------------------------------------------------- |
+| `steady`   | Controlled continuous pacing                         |
+| `burst`    | Immediate batch processing                           |
+| `adaptive` | Runtime adjustment based on observed success/failure |
+
+The adaptive limiter observes counters and modifies its current rate within internal bounds.
+
+Implementation:
+
+```text
+core/food.go
+```
+
+---
+
+# 📈 Adaptive Escalation
+
+The project also contains an `Escalator` component.
+
+It observes recent success/failure deltas and calculates an adjustment factor.
+
+Conceptually:
+
+```text
+             Runtime results
+                    │
+                    ▼
+             ┌─────────────┐
+             │  Escalator  │
+             └──────┬──────┘
+                    │
+          ┌─────────┼─────────┐
+          ▼         ▼         ▼
+       Increase   Stable   Decrease
+```
+
+Implementation:
+
+```text
+core/escalate.go
+```
+
+---
+
+# 🌊 Pulse Wave
+
+`PulseWave` provides automated ON/OFF execution cycles.
+
+The scheduler supports:
+
+* Pulse ON duration
+* Pulse OFF duration
+* Timing jitter
+* Multiple configured vectors
+* Temporary runtime configuration changes
+* Automatic restoration of L3/L4 configuration
+
+Supported vector names include:
+
+```text
+l3
+l3-frag
+
+l4
+l4-state
+
+l7
+l7-heavy
+```
+
+Architecture:
+
+```text
+       ┌───────────────┐
+       │   Pulse ON    │
+       └───────┬───────┘
+               │
+          Run vectors
+               │
+       ┌───────▼───────┐
+       │   Pulse OFF   │
+       └───────┬───────┘
+               │
+               ▼
+            Repeat
+```
+
+Implementation:
+
+```text
+core/pulse_wave.go
+```
+
+---
+
+# 📊 Runtime Counters
+
+The core state contains a shared counter subsystem for runtime statistics.
+
+The shell exposes:
+
+```text
+status
+```
+
+which reports values such as:
+
+```text
+mode
+uptime
+success count
+failure count
+bytes
+active connections
+```
+
+The project also provides a live terminal counter through:
+
+```text
+core/live_counter.go
+```
+
+---
+
+# 🖥️ Interactive CLI
+
+BYTER launches into an interactive shell after initialization.
+
+```text
+shell >
+```
+
+The CLI provides:
+
+```text
+help
+show
+status
+set
+stop
+banner
+run
+exit
+quit
+q
+```
+
+Numeric shortcuts are also available:
+
+```text
+1 → L3
+2 → L4
+3 → L7
+4 → Pulse Wave
+```
+
+The CLI implementation is located in:
+
+```text
+cmd/shell.go
+```
+
+---
+
+# ⚙️ Configuration Model
+
+The runtime state is represented by `EngineState`.
+
+```text
+EngineState
+│
+├── GlobalConfig
+├── L3Config
+├── L4Config
+├── L7Config
+├── WaveConfig
+│
+├── RawFD
+├── ResolvedTarget
+├── PrebuiltIPv4
+│
+├── Counters
+├── StopCurrent
+└── CurrentMode
+```
+
+This keeps the CLI configuration and individual network engines connected through a shared runtime state.
+
+Implementation:
+
+```text
+core/engine.go
 ```
 
 ---
@@ -130,8 +550,8 @@ byter/
 │   ├── food.go
 │   ├── l3_fragment.go
 │   ├── l4_state.go
-│   ├── l7_asymmetric.go
 │   ├── live_counter.go
+│   ├── l7_asymmetric.go
 │   ├── pulse_wave.go
 │   │
 │   └── l7/
@@ -155,364 +575,175 @@ byter/
 
 ---
 
-# 🔍 Module Overview
+# 🧩 Module Reference
 
-### `cmd/`
+## `main.go`
 
-Responsible for the command-line interface and interactive shell.
-
-```text
-banner.go    → Startup banner and visual interface
-init.go      → Initialization and environment checks
-menu.go      → Help and command information
-shell.go     → Interactive command processing
-```
-
-### `core/`
-
-Contains the primary runtime engine.
+Application entry point.
 
 ```text
-engine.go          → Global configuration and runtime state
-counter.go         → Traffic statistics
-live_counter.go    → Real-time terminal statistics
-escalate.go        → Adaptive rate management
-food.go            → Rate-control implementation
-pulse_wave.go      → Automated scheduling
-```
-
-### `core/l7/`
-
-Contains application-layer networking components.
-
-```text
-client.go          → HTTP client
-dns.go             → DNS caching
-headers.go         → Header generation
-jar.go             → Cookie/session handling
-profile.go         → Browser profiles
-proxy.go           → Proxy management
-request.go         → Request processing
-solver.go          → JavaScript challenge handling
-```
-
-### `utils/`
-
-Low-level Linux networking utilities.
-
-```text
-raw_socket.go      → Raw socket utilities
-tcp_craft.go       → IPv4/TCP packet construction
-batch_send.go      → Linux batch transmission
+main()
+ └── cmd.Boot()
 ```
 
 ---
 
-# ⚙️ Requirements
+## `cmd/`
 
-| Requirement          | Version / Notes                                     |
-| :------------------- | :-------------------------------------------------- |
-| **Operating System** | Linux                                               |
-| **Go**               | 1.22+                                               |
-| **Privileges**       | Appropriate networking capabilities may be required |
-| **Architecture**     | amd64 / arm64 depending on dependencies             |
-| **Dependencies**     | Managed through Go modules                          |
+Responsible for startup, CLI interaction and user-facing output.
 
-Install the project dependencies with:
+| File        | Responsibility                            |
+| :---------- | :---------------------------------------- |
+| `banner.go` | BYTER ASCII banner                        |
+| `init.go`   | Linux initialization and raw socket setup |
+| `menu.go`   | Built-in examples                         |
+| `shell.go`  | Interactive command shell                 |
+
+---
+
+## `core/`
+
+Contains the main runtime engines.
+
+| File               | Responsibility                  |
+| :----------------- | :------------------------------ |
+| `engine.go`        | Runtime state and configuration |
+| `counter.go`       | Statistics counters             |
+| `live_counter.go`  | Live statistics display         |
+| `food.go`          | Rate limiter                    |
+| `escalate.go`      | Rate adjustment logic           |
+| `l3_fragment.go`   | L3 packet engine                |
+| `l4_state.go`      | L4 packet engine                |
+| `l7_asymmetric.go` | L7 orchestration                |
+| `pulse_wave.go`    | Pulse scheduling                |
+
+---
+
+## `core/l7/`
+
+Application-layer networking components.
+
+| File             | Responsibility                   |
+| :--------------- | :------------------------------- |
+| `client.go`      | HTTP client / transport creation |
+| `dns.go`         | DNS cache                        |
+| `flood.go`       | L7 traffic engine                |
+| `headers.go`     | Browser-style headers            |
+| `jar.go`         | Session and cookies              |
+| `profile.go`     | Browser profiles                 |
+| `proxy.go`       | Proxy pool                       |
+| `request.go`     | HTTP request/resource flow       |
+| `slow_header.go` | Slow-header component            |
+| `slow_post.go`   | Slow-POST component              |
+| `solver.go`      | JavaScript processing            |
+
+---
+
+## `utils/`
+
+Low-level networking primitives.
+
+| File            | Responsibility                             |
+| :-------------- | :----------------------------------------- |
+| `raw_socket.go` | Linux raw socket creation                  |
+| `batch_send.go` | Linux batch packet transmission            |
+| `tcp_craft.go`  | IPv4/TCP packet construction and checksums |
+
+---
+
+# 📦 Dependencies
+
+The project currently declares the following Go dependencies:
+
+| Dependency | Purpose                       |
+| :--------- | :---------------------------- |
+| `chromedp` | Browser automation            |
+| `goja`     | Embedded JavaScript runtime   |
+| `utls`     | TLS ClientHello customization |
+| `x/net`    | HTTP/2 networking             |
+| `x/sys`    | System-level functionality    |
+
+Go module:
+
+```text
+module byter
+
+go 1.22
+```
+
+---
+
+# 🐧 Platform
+
+BYTER is currently designed around **Linux-specific networking functionality**.
+
+Several components explicitly use Linux build constraints:
+
+```go
+//go:build linux
+```
+
+This applies to functionality such as:
+
+* Raw sockets
+* Linux system calls
+* `sendmmsg`
+* Low-level packet transmission
+
+The current implementation should therefore be treated as a **Linux-first project**.
+
+---
+
+# 🔐 Permissions
+
+The initialization code checks for elevated privileges before opening the raw socket.
+
+The application expects either:
+
+```text
+root
+```
+
+or equivalent networking capabilities such as:
+
+```text
+CAP_NET_RAW
+```
+
+The exact capability configuration depends on the Linux environment.
+
+---
+
+# 🚀 Build
+
+Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/byter.git
+cd byter
+```
+
+Download Go dependencies:
 
 ```bash
 go mod tidy
 ```
 
----
-
-# 🚀 Installation
-
-## 1. Clone
-
-```bash
-git clone https://github.com/usercode-admin/Bytert
-cd Byter
-```
-
-## 2. Install dependencies
-
-```bash
-go mod tidy
-```
-
-## 3. Build
+Build:
 
 ```bash
 go build -o byte .
 ```
 
-## 4. Start
+Run inside an authorized Linux laboratory environment with the privileges required by the configured networking functionality:
 
 ```bash
 sudo ./byte
 ```
 
-> Depending on the configured networking features, BYTER may require elevated privileges or specific Linux capabilities.
-
 ---
 
-# 🎮 Interactive Shell
-
-After starting BYTER, the application provides an interactive shell:
-
-```text
-shell >
-```
-
-### Global Commands
-
-| Command            | Description                   |
-| :----------------- | :---------------------------- |
-| `set target <ip>`  | Configure the default target  |
-| `set port <n>`     | Configure the target port     |
-| `set rate <n>`     | Configure the traffic rate    |
-| `set threads <n>`  | Configure worker count        |
-| `set flood <mode>` | Select traffic-control mode   |
-| `show`             | Display current configuration |
-| `status`           | Display runtime statistics    |
-| `stop`             | Stop the active operation     |
-| `banner`           | Display the BYTER banner      |
-| `help`             | Display command information   |
-| `exit`             | Exit BYTER                    |
-| `quit`             | Exit BYTER                    |
-| `q`                | Exit BYTER                    |
-
----
-
-# 🌐 Layer Modules
-
-## L3 — Network Layer
-
-The L3 module provides controlled IPv4 packet-generation and fragmentation research capabilities.
-
-```text
-set l3 target <ip>
-set l3 rate <n>
-set l3 threads <n>
-set l3 flood <mode>
-set l3 overlap <true|false>
-set l3 fuzz-id <true|false>
-```
-
----
-
-## 🔗 L4 — Transport Layer
-
-The L4 engine focuses on TCP state and packet-construction experimentation.
-
-```text
-set l4 target <ip>
-set l4 port <n>
-set l4 window <n>
-set l4 flags <flags>
-set l4 spoof-seq <true|false>
-set l4 threads <n>
-```
-
----
-
-## 🌍 L7 — Application Layer
-
-The L7 subsystem provides configurable HTTP client behavior and application-layer traffic research.
-
-```text
-set l7 url <url>
-set l7 mode <mode>
-set l7 threads <n>
-set l7 conns <n>
-set l7 interval <n>
-set l7 browser <profile>
-set l7 js-solver <solver>
-set l7 ja3 <true|false>
-set l7 http2 <true|false>
-set l7 referer-chain <true|false>
-```
-
-Supported browser profiles:
-
-```text
-chrome
-firefox
-safari
-edge
-```
-
-Available JavaScript solver modes:
-
-```text
-none
-goja
-chromedp
-```
-
----
-
-# 🌊 Pulse Wave
-
-**Pulse Wave**, internally referred to as `MuWave`, provides automated scheduling for configured traffic modules.
-
-Conceptually:
-
-```text
-        ON                         OFF
- ┌───────────────┐          ┌───────────────┐
- │   RUN CYCLE   │          │   REST CYCLE  │
- │               │          │               │
- │ configured    │          │ wait / reset  │
- │ vectors       │          │               │
- └───────┬───────┘          └───────┬───────┘
-         │                          │
-         └──────────────┬───────────┘
-                        │
-                    NEXT CYCLE
-```
-
-Configuration:
-
-```text
-set wave on <duration>
-set wave off <duration>
-set wave jitter <duration>
-set wave vectors <vectors>
-```
-
----
-
-# 📊 Traffic Control
-
-BYTER supports multiple rate-control strategies.
-
-### Steady
-
-Maintains a relatively consistent configured rate.
-
-```text
-steady
-```
-
-### Burst
-
-Allows short traffic bursts within the configured control parameters.
-
-```text
-burst
-```
-
-### Adaptive
-
-Adjusts behavior according to runtime conditions and observed errors.
-
-```text
-adaptive
-```
-
-The rate-control subsystem is implemented primarily through:
-
-```text
-core/food.go
-core/escalate.go
-```
-
----
-
-# 🖥️ Runtime Monitoring
-
-BYTER includes a live terminal counter for observing runtime activity.
-
-Example conceptual output:
-
-```text
-┌─────────────────────────────────────────┐
-│              BYTER STATUS               │
-├─────────────────────────────────────────┤
-│ State       : RUNNING                   │
-│ Layer       : L7                        │
-│ Threads     : 32                        │
-│ Requests    : 12,481                    │
-│ Success     : 12,102                    │
-│ Errors      : 379                       │
-│ Runtime     : 00:02:41                  │
-└─────────────────────────────────────────┘
-```
-
----
-
-# 🧪 Research Workflow
-
-A typical authorized laboratory workflow can be organized as:
-
-```text
-        ┌─────────────┐
-        │ Define Scope│
-        └──────┬──────┘
-               │
-        ┌──────▼──────┐
-        │ Prepare Lab │
-        └──────┬──────┘
-               │
-        ┌──────▼──────┐
-        │ Configure   │
-        │   BYTER     │
-        └──────┬──────┘
-               │
-        ┌──────▼──────┐
-        │ Run Test    │
-        └──────┬──────┘
-               │
-        ┌──────▼──────┐
-        │ Monitor     │
-        │ Telemetry   │
-        └──────┬──────┘
-               │
-        ┌──────▼──────┐
-        │ Analyze     │
-        │ Results     │
-        └──────┬──────┘
-               │
-        ┌──────▼──────┐
-        │ Document    │
-        └─────────────┘
-```
-
----
-
-# ⚡ Performance
-
-BYTER is designed with Linux-oriented performance considerations:
-
-* Efficient socket handling
-* Batch transmission support
-* Configurable worker concurrency
-* Runtime counters
-* Adaptive rate management
-* DNS caching
-* Reusable HTTP sessions
-* Modular traffic engines
-* Reduced unnecessary allocations where practical
-
-The implementation keeps performance-sensitive functionality separated from the CLI layer.
-
----
-
-# 🛠️ Development
-
-Build normally with:
-
-```bash
-go build .
-```
-
-Run tests:
-
-```bash
-go test ./...
-```
+# 🧪 Development
 
 Format the source:
 
@@ -520,47 +751,93 @@ Format the source:
 go fmt ./...
 ```
 
-Check dependencies:
+Run the Go test suite:
+
+```bash
+go test ./...
+```
+
+Refresh module dependencies:
 
 ```bash
 go mod tidy
 ```
 
+Build without creating a named output:
+
+```bash
+go build .
+```
+
 ---
 
-# 🗺️ Roadmap
+# 🗺️ Project Design
 
-Possible future improvements:
+BYTER separates the application into four major layers:
 
-* [ ] Improved terminal UI
-* [ ] More detailed runtime telemetry
-* [ ] Configuration profiles
-* [ ] Better error reporting
-* [ ] Additional HTTP client profiles
-* [ ] Extended Linux performance optimizations
+```text
+┌──────────────────────────────────────────────┐
+│                  CLI / CMD                   │
+│        Commands • Shell • Initialization     │
+└──────────────────────┬───────────────────────┘
+                       │
+┌──────────────────────▼───────────────────────┐
+│                   CORE                       │
+│   State • Counters • Rate • Scheduling       │
+└───────────────┬───────────────┬───────────────┘
+                │               │
+        ┌───────▼───────┐ ┌────▼────────────┐
+        │   L3 / L4     │ │       L7        │
+        │ Packet Engine │ │ HTTP Subsystem  │
+        └───────┬───────┘ └──────┬─────────┘
+                │                 │
+        ┌───────▼─────────────────▼────────┐
+        │             UTILS                │
+        │ Raw Socket • Packet Crafting     │
+        │ Batch Transmission               │
+        └──────────────────────────────────┘
+```
+
+This modular structure keeps the command interface separate from the underlying networking engines.
+
+---
+
+# 🛣️ Roadmap
+
+Potential areas for future development:
+
+* [ ] More comprehensive automated tests
+* [ ] Improved configuration validation
 * [ ] Structured logging
-* [ ] Exportable test reports
-* [ ] Improved laboratory/test-environment safeguards
-* [ ] Automated benchmark mode
+* [ ] Better runtime telemetry
+* [ ] Configuration profiles
+* [ ] Cleaner error reporting
+* [ ] Improved cross-architecture handling
+* [ ] Additional HTTP client profiles
+* [ ] More robust resource parsing
+* [ ] Benchmarking and profiling utilities
+* [ ] Safer laboratory/test-environment controls
 
 ---
 
 # ⚠️ Responsible Use
 
-BYTER is intended **only** for:
+BYTER is a **security research and network experimentation tool**.
 
-* Security research
-* Authorized penetration testing
-* Controlled laboratory environments
-* Network-stack experimentation
-* Educational purposes
-* Testing systems for which you have explicit authorization
+Use it only against systems and networks where you have explicit authorization.
 
-**Do not use BYTER against systems, networks, servers, or services without explicit permission.**
+Recommended environments include:
 
-Unauthorized denial-of-service activity can cause outages, data loss, service disruption, and legal consequences.
+* Local virtual machines
+* Isolated test networks
+* Personal infrastructure
+* Authorized penetration-testing environments
+* CTF/laboratory environments
+* Systems specifically designated for security testing
 
-The author and contributors are not responsible for misuse of this software.
+Do **not** use the software to disrupt, degrade, overwhelm, or interfere with third-party infrastructure.
+
+The author and contributors are not responsible for damage, service disruption, or other consequences resulting from unauthorized use.
 
 ---
 
@@ -598,13 +875,19 @@ SOFTWARE.
 
 <div align="center">
 
-### ⚡ BYTER
+## ⚡ BYTER
 
-**Built for networking research.
-Designed for controlled environments.**
+**Network Security Research • Linux • Go**
 
-<br>
+```text
+L3  ───  L4  ───  L7
+ │       │       │
+ └───────┴───────┘
+        CORE
+         │
+       BYTER
+```
 
-`Go` • `Linux` • `L3` • `L4` • `L7`
+*Built for controlled security research and network experimentation.*
 
 </div>
