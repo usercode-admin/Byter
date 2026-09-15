@@ -719,7 +719,7 @@ The exact capability configuration depends on the Linux environment.
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/byter.git
+git clone https://github.com/usercode-admin/Byter
 cd byter
 ```
 
