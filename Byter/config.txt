@@ -1,0 +1,39 @@
+byter/
+├── go.mod
+├── main.go
+├── config.txt
+│
+├── cmd/
+│   ├── banner.go
+│   ├── init.go
+│   ├── menu.go
+│   └── shell.go
+│
+├── core/
+│   ├── counter.go
+│   ├── engine.go
+│   ├── escalate.go
+│   ├── flood.go
+│   ├── l3_fragment.go
+│   ├── l4_state.go
+│   ├── l7_asymmetric.go
+│   ├── live_counter.go
+│   ├── pulse_wave.go
+│   │
+│   └── l7/
+│       ├── client.go
+│       ├── dns.go
+│       ├── flood.go
+│       ├── headers.go
+│       ├── jar.go
+│       ├── profile.go
+│       ├── proxy.go
+│       ├── request.go
+│       ├── slow_header.go
+│       ├── slow_post.go
+│       └── solver.go
+│
+└── utils/
+    ├── batch_send.go
+    ├── raw_socket.go
+    └── tcp_craft.go
