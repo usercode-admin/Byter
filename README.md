@@ -79,10 +79,10 @@ It combines low-level packet handling, TCP state experimentation, HTTP traffic s
               │                     │                     │
        ┌──────▼──────┐       ┌──────▼──────┐       ┌──────▼──────┐
        │     L3      │       │     L4      │       │     L7      │
-       │   Network   │       │  Transport  │       │ Application  │
+       │   Network   │       │  Transport  │       │ Application │
        └──────┬──────┘       └──────┬──────┘       └──────┬──────┘
               │                     │                     │
-              │                     │              ┌──────▼──────┐
+              │                     │              ┌──────▼───────┐
               │                     │              │ HTTP Engine  │
               │                     │              ├──────────────┤
               │                     │              │ Headers      │
@@ -226,8 +226,8 @@ go mod tidy
 ## 1. Clone
 
 ```bash
-git clone https://github.com/yourusername/byter.git
-cd byter
+git clone https://github.com/usercode-admin/Bytert
+cd Byter
 ```
 
 ## 2. Install dependencies
