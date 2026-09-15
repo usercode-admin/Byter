@@ -1,4 +1,4 @@
-# ⚡ BYTER
+# BYTER
 
 <div align="center">
 
